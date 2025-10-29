@@ -1,0 +1,9 @@
+action:
+  - name: Check paru
+    command: ...
+
+  - name: Check yay
+    command: ...
+
+  - name: Check packman
+    command: ...

@@ -1,0 +1,7 @@
+[package]
+name = "dotify-lib"
+version = "0.1.0"
+edition = "2024"
+author = ["Maksim Shushkevich <m.e.shushkevich@yandex.com>"]
+licence = "MIT"
+description = "TODO"

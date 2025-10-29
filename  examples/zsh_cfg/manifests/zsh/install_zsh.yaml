@@ -1,0 +1,3 @@
+action:
+  name: "Install zsh"
+  command: $provider -S zsh

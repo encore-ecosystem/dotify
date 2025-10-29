@@ -1,0 +1,5 @@
+[config]
+name = "zsh_cfg"
+description = "Setup shell with predefined config"
+version = "0.0.1"
+author = "Maksim Shushkevich"

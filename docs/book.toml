@@ -1,0 +1,5 @@
+[book]
+authors = ["Maskim Shushkevich"]
+language = "en"
+src = "src"
+title = "Dotify"

@@ -1,0 +1,12 @@
+[package]
+name = "dotify"
+version = "0.1.0"
+edition = "2024"
+author = ["Maksim Shushkevich <m.e.shushkevich@yandex.com>"]
+licence = "MIT"
+description = "Dot manager"
+
+[dependencies]
+clap = { version = "4.5.50", features = ["derive"] }
+serde_yaml = "0.9.34"
+toml = "0.9.8"
