@@ -1,0 +1,9 @@
+action:
+  name: "Install zsh"
+  command:
+    - hook: yay.install
+      args:
+        - zsh
+
+  depends_on:
+    - yay

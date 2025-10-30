@@ -1,0 +1,13 @@
+plugin:
+  name: pacman
+  hooks:
+    - hook:
+        name: "install"
+        args:
+          - package
+        command: "pacman -S {{ package_name }}"
+    - hook:
+        name: "remove"
+        args:
+          - package
+        command: "pacman -R {{ package_name }}"

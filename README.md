@@ -36,3 +36,20 @@ mdbook serve
 - cargo
 - yay
 - shell
+
+# Dotify Config
+plugins = {
+  "git",
+  "yay",
+}
+
+
+project --> manifest_1
+        |-> ...
+        |-> manifest_n
+        |-> subproject_1
+        |-> ...
+        |-> subproject_m
+
+manifest - folder with main.yaml
+project  - folder with dotify.toml

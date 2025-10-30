@@ -5,3 +5,6 @@ edition = "2024"
 author = ["Maksim Shushkevich <m.e.shushkevich@yandex.com>"]
 licence = "MIT"
 description = "TODO"
+
+[dependencies]
+serde = { version = "1.0.228", features = ["derive"] }

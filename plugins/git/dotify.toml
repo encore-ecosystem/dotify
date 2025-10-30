@@ -1,0 +1,5 @@
+[config]
+name = "yay"
+description = "yay package manager provider"
+version = "0.0.1"
+author = "Maksim Shushkevich"
