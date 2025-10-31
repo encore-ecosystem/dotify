@@ -1,0 +1,25 @@
+plugin:
+  name: git
+
+  hooks:
+    - hook:
+        name: clone
+        args:
+          - repo_url
+        command: "git clone {{ url }}"
+
+  check-installation:
+    - step:
+        procedure: shell.run
+        expected: 0
+        command: git
+        args:
+          - "-v"
+
+  installation:
+    - step:
+        procedure: pacman.install
+        package: git
+
+  dependencies:
+    - pacman

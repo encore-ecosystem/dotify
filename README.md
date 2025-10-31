@@ -53,3 +53,6 @@ project --> manifest_1
 
 manifest - folder with main.yaml
 project  - folder with dotify.toml
+
+
+1 plugin for 1 yaml
