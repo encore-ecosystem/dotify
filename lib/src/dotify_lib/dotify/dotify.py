@@ -1,54 +1,147 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from dotify_lib.plugin import PluginManager
+from dotify_lib.shell import Shell
+
 from pathlib import Path
+from collections import deque
 
 import yaml
 
 
 @dataclass
+class Config:
+    depends: list[Path]
+    actions: list[dict]
+
+
+@dataclass
 class Dotify:
     plugins: PluginManager
+    tree: dict[Path, Config] = field(default_factory=dict)
+    order: deque = field(default_factory=deque)
 
-    def apply_from(self, path: Path):
-        # add builtin plugins
-        dotify_project_root = (
-            Path(__file__).resolve().parent.parent.parent.parent.parent
-        )
-        plugins_path = dotify_project_root / "plugins"
-        for plugin_path in plugins_path.glob("*"):
-            self._apply(plugin_path)
+    def apply(self, path: Path):
+        path = self._predict_path(path)
 
-    def _apply(self, path: Path):
-        config_manifest_path = path / "dotify.toml"
-        manifests_path = path / "manifests"
-        if (
-            config_manifest_path.exists()
-            and manifests_path.exists()
-            and manifests_path.is_dir()
-        ):
-            return self._apply_from_manifests(manifests_path)
+        # step 1: Building dependency tree
+        print(f"[INFO]: Building dependency tree...")
+        self._build_subtree(path)
 
-        return self._apply_from_yaml(path / "main.yaml")
-
-    def _apply_from_manifests(self, path: Path):
-        return self._apply_from_yaml(path / "main.yaml")
-
-    def _apply_from_yaml(self, path2yaml: Path):
-        if not path2yaml.exists():
-            print(f"[ERROR]: Unable to find `dotify.toml` or manifests dir in {path}")
+        # step 2: Validate tree
+        print(f"[INFO]: Validating tree...")
+        if not self._check_is_dag(path):
+            print(f"[ERROR]: Found cycle!")
             exit(-1)
 
-        with path2yaml.open("r") as source:
-            config = yaml.safe_load(source)
-            if not config:
-                config = {}
+        # step 3: Build order
+        print(f"[INFO]: Applying configs...")
+        self._build_order(path)
 
-        # priority 1: plugin section
-        if "plugin" in config:
-            print(f"[INFO]: Loading 'plugin' section for {path2yaml}")
-        # priority 2: dependencies section
+        # step 4: Apply one-by-one
+        while self.order:
+            actual = self.order.popleft()
+            print(f"[INFO]: Applying config: {actual}")
+            self._apply(actual)
 
-        # priority 3: actions sections
+    def _build_subtree(self, path: Path):
+        assert path.is_file()
 
-        # print(path2yaml, config)
+        # Cache + prevent recursive trap
+        if path in self.tree:
+            return
+
+        if self.is_config(path):
+            with path.open("r") as source:
+                config = yaml.safe_load(source) or {}
+
+            tree_node = Config(depends=[], actions=config.get("actions", {}))
+
+            deps = config.get("depends", [])
+            if not isinstance(deps, list):
+                print(f"[ERROR]: Dependency section should be a list: {path}")
+                exit(-1)
+
+            for dep in deps:
+                dep = Path(dep)
+                if not dep.is_absolute():
+                    dep = path.parent / dep
+                dep = self._predict_path(dep.resolve())
+                tree_node.depends.append(dep)
+
+            self.tree[path] = tree_node
+            for dep in tree_node.depends:
+                self._build_subtree(dep)
+
+        elif self.is_manifest(path):
+            print("!!!")
+
+        else:
+            print(f"[ERROR]: Unexpected file: {path}")
+            exit(-1)
+
+        # Read config
+
+    def _check_is_dag(self, root: Path) -> bool:
+        observed: set[Path] = set()
+
+        to_observe: deque[Path] = deque([root])
+        while to_observe:
+            node = to_observe.popleft()
+            if node in observed:
+                return False
+
+            observed.add(node)
+            for child in self.tree[node].depends:
+                to_observe.append(child)
+
+        return True
+
+    def _build_order(self, root: Path):
+        indegree = {node: len(self.tree[node].depends) for node in self.tree}
+        queue = deque([node for node, deg in indegree.items() if deg == 0])
+
+        while queue:
+            node = queue.popleft()
+            self.order.append(node)
+
+            for parent, entry in self.tree.items():
+                if node in entry.depends:
+                    indegree[parent] -= 1
+                    if indegree[parent] == 0:
+                        queue.append(parent)
+
+    def _predict_path(self, path: Path) -> Path:
+        if not path.is_dir():
+            return path
+
+        manifests_path = path / "dotify.toml"
+        if manifests_path.exists():
+            return manifests_path
+
+        main_yaml_path = path / "main.yaml"
+        if main_yaml_path.exists():
+            return main_yaml_path
+
+        print(f"[ERROR]: Unable to predict path for: {path}")
+        exit(-1)
+
+    def _apply(self, path: Path):
+        actions = self.tree[path].actions
+
+        shell = Shell(cwd=path.parent)
+
+        for action in actions:
+            if "procedure" not in action:
+                print(f"[ERROR]: Unable to find procedure in config: {path}")
+                exit(-1)
+
+            self.plugins.run_action(action, cwd=path.parent)
+
+    @staticmethod
+    def is_manifest(path: Path) -> bool:
+        return path.name == "dotify.toml"
+
+    @staticmethod
+    def is_config(path: Path) -> bool:
+        return path.suffix == ".yaml"

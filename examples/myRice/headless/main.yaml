@@ -1,0 +1,7 @@
+depends:
+  - pacman
+  - git
+  - paru
+  - fastfetch
+  - nvim
+  - zsh

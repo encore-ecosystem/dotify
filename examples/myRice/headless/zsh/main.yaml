@@ -1,0 +1,3 @@
+actions:
+  - procedure: paru.install
+    packages: ["zsh"]

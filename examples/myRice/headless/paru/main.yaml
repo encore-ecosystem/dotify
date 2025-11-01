@@ -1,0 +1,16 @@
+depends:
+  - ../rustup
+
+actions:
+  - procedure: git.clone
+    name: Clonning paru repository
+    url: https://aur.archlinux.org/paru-bin.git
+
+  - procedure: shell.run
+    name: Install paru
+    command: cd
+    args: [paru-bin, makepkg, -si]
+
+  - procedure: shell.run
+    command: echo
+    args: ["Hello, World!"]

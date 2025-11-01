@@ -23,4 +23,12 @@ def apply(*args):
     plugin_manager = PluginManager.default()
 
     # step 2: apply config
-    Dotify(plugin_manager).apply_from(cwd)
+    manifests_folder = cwd / "manifests"
+    if manifests_folder_overide := args.manifest:
+        manifests_folder_overide = Path(manifests_folder_overide)
+        if manifests_folder_overide.is_absolute():
+            manifests_folder = manifests_folder_overide
+        else:
+            manifests_folder = (cwd / manifests_folder_overide).resolve()
+
+    Dotify(plugin_manager).apply(manifests_folder)
