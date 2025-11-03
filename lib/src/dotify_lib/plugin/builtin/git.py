@@ -19,7 +19,7 @@ class DotifyPlugin_git(DotifyPlugin):
         **kwargs,
     ):
         if "url" not in kwargs:
-            print(f"[ERROR]: Provide url for git.clone!")
+            print("[ERROR]: Provide url for git.clone!")
             exit(-1)
         url: str = kwargs["url"]
 

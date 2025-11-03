@@ -1,12 +1,12 @@
 from argparse import ArgumentParser
-from dotify_app import command
-
 from pathlib import Path
+
+from dotify_app import command
 
 
 def main():
     parser = ArgumentParser(
-        prog="dotify", description="Dotify - a modular configuration tool"
+        prog="dotify", description="Dotify - dotfile configuration manager"
     )
 
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -32,4 +32,4 @@ def main():
 
 
 if __name__ == "__main__":
-    entrypoint()
+    main()

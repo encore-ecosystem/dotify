@@ -1,14 +1,15 @@
-from dotify_lib.plugin.plugin import DotifyPlugin
-from dotify_lib.plugin.builtin import (
-    DotifyPlugin_shell,
-    DotifyPlugin_pacman,
-    DotifyPlugin_git,
-    DotifyPlugin_paru,
-    DotifyPlugin_os,
-)
-from dotify_lib.namespace import Namespace, DotifyNamespace
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
+
+from dotify_lib.namespace import Namespace
+from dotify_lib.plugin.builtin import (
+    DotifyPlugin_git,
+    DotifyPlugin_os,
+    DotifyPlugin_pacman,
+    DotifyPlugin_paru,
+    DotifyPlugin_shell,
+)
+from dotify_lib.plugin.plugin import DotifyPlugin
 
 
 @dataclass
@@ -34,7 +35,7 @@ class PluginManager:
     def run_action(self, action: dict, namespace: Namespace, cwd: Path):
         procedure = action["procedure"]
         if "." not in procedure:
-            print(f"[ERROR]: Plugin and hook should be splitted using '.'")
+            print("[ERROR]: Plugin and hook should be splitted using '.'")
             exit(-1)
 
         plugin_name, hook_name = procedure.split(".")
@@ -51,4 +52,5 @@ class PluginManager:
             print(f"[ERROR]: Plugin '{plugin_name}' does not have hook: {hook_name}")
             exit(-1)
 
+        assert callback
         callback(**action, namespace=namespace, cwd=cwd)

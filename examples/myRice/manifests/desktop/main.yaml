@@ -1,5 +1,5 @@
 depends:
-  # - services
+  - services
   - zed
   - waybar
   - dolphin

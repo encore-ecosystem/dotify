@@ -17,7 +17,7 @@ def apply(*args):
 
     manifest = DotifyProjectManifest.read(manifest_path)
     if manifest is None:
-        print(f"[ERROR]: Unable to open manifest file")
+        print("[ERROR]: Unable to open manifest file")
         exit(-1)
 
     # step 1: initialize plugin manager

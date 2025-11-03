@@ -26,17 +26,17 @@ class Dotify:
         path = self._predict_path(path)
 
         # step 1: Building dependency tree
-        print(f"[INFO]: Building dependency tree...")
+        print("[INFO]: Building dependency tree...")
         self._build_subtree(path)
 
         # step 2: Validate tree
-        print(f"[INFO]: Validating tree...")
+        print("[INFO]: Validating tree...")
         if not self._check_is_dag(path):
-            print(f"[ERROR]: Found cycle!")
+            print("[ERROR]: Found cycle!")
             exit(-1)
 
         # step 3: Build order
-        print(f"[INFO]: Applying configs...")
+        print("[INFO]: Applying configs...")
         self._build_order(path)
 
         # step 4: Apply one-by-one

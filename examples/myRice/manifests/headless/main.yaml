@@ -2,7 +2,8 @@ depends:
   - pacman
   - git
   - rustup
-  # - paru
+  - paru
   - fastfetch
   - nvim
   - zsh
+  - python

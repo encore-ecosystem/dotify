@@ -1,5 +1,5 @@
 import re
-from dotify_lib.namespace import Namespace, DotifyNamespace
+from dotify_lib.namespace import Namespace
 
 _TEMPLATE_PLACEHOLDER = re.compile(r"{{\s*(.*?)\s*}}")
 

@@ -6,8 +6,6 @@ from dotify_lib.shell import Shell
 from dataclasses import dataclass
 from pathlib import Path
 
-import shutil
-import os
 
 
 @dataclass
@@ -22,11 +20,11 @@ class DotifyPlugin_os(DotifyPlugin):
         **kwargs,
     ):
         if "src" not in kwargs:
-            print(f"[ERROR]: Provide src for os.symlink!")
+            print("[ERROR]: Provide src for os.symlink!")
             exit(-1)
 
         if "dst" not in kwargs:
-            print(f"[ERROR]: Provide dst for os.symlink!")
+            print("[ERROR]: Provide dst for os.symlink!")
             exit(-1)
 
         src = get_absolute_path(cwd, Path(resolve(kwargs["src"], namespace)))
@@ -52,11 +50,11 @@ class DotifyPlugin_os(DotifyPlugin):
         **kwargs,
     ):
         if "src" not in kwargs:
-            print(f"[ERROR]: Provide src for os.move!")
+            print("[ERROR]: Provide src for os.move!")
             exit(-1)
 
         if "dst" not in kwargs:
-            print(f"[ERROR]: Provide dst for os.move!")
+            print("[ERROR]: Provide dst for os.move!")
             exit(-1)
 
         src = get_absolute_path(cwd, Path(resolve(kwargs["src"], namespace)))

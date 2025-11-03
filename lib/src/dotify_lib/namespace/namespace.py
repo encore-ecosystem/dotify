@@ -1,6 +1,4 @@
-from dataclasses import dataclass
 from abc import ABC
-from pathlib import Path
 
 
 class Namespace(ABC):

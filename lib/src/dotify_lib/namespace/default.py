@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from dotify_lib.namespace import Namespace
+
 from dotify_lib.namespace.builtin import NamespaceUser
+from dotify_lib.namespace.namespace import Namespace
 
 
 @dataclass

@@ -11,7 +11,7 @@ class DotifyPlugin_shell(DotifyPlugin):
 
     def hook_run(self, cwd: Path, namespace: Namespace, *args, **kwargs):
         if "command" not in kwargs:
-            print(f"[ERROR]: Please, provide `command` for shell.run!")
+            print("[ERROR]: Please, provide `command` for shell.run!")
             exit(-1)
 
         shell = Shell(cwd=cwd)

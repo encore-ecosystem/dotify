@@ -1,15 +1,23 @@
 # Dotify
 
-Менеджер конфигов и окружения.
+Dotfile configuration manager inspired by [comtrya](https://github.com/comtrya/comtrya)
 
-Разделяем две области:
-1. Конфиги
-2. Приложения
+## Usage
+```
+usage: dotify [-h] {init,apply} ...
 
-С помощью YAML конфигов можем создавать свой дот, после чего проинициализировать с помощью dotify.
+Dotify - dotfile configuration manager
 
+positional arguments:
+  {init,apply}
+    init        Initialize a new project
+    apply       Apply configuration
 
-# Documentation
+options:
+  -h, --help    show this help message and exit
+```
+
+## Documentation (TODO)
 Make sure that you have installed `mdbook`:
 ```sh
 cargo install mdbook
@@ -20,54 +28,23 @@ To open documentation:
 mdbook serve
 ```
 
-# Commands
-
-- [ ] `init`:
-  - Initialize dot environment
-  - Usage: `dotify init`
-
-- [ ] `apply`
-  - Apply dot environment
-  - Usage: `dotify apply`
-
-
-# Plugins
-- git
-- cargo
-- yay
-- shell
-
-# Dotify Config
-plugins = {
-  "git",
-  "yay",
-}
-
-
-project --> manifest_1
-        |-> ...
-        |-> manifest_n
-        |-> subproject_1
-        |-> ...
-        |-> subproject_m
-
-manifest - folder with main.yaml
-project  - folder with dotify.toml
-
-
-1 plugin for 1 yaml
-
-
-
 ## Installation
 
-### step 0:
+### step 0
 Make sure that you have installed `uv`:
 ```
 sudo pacman -S uv
 ```
 
-### step 1:
+### step 1
 Install `dotify`
 ```
+uv sync
+source .venv/bin/activate
 ```
+
+## Roadmap
+- [ ] Documentation
+- [ ] Improve yaml path resolver
+- [ ] Logging with colors
+- [ ] Improve error handling

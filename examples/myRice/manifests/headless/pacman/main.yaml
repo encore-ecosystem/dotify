@@ -10,3 +10,9 @@ actions:
     src: "./files/pacman.conf"
     dst: "/etc/pacman.conf"
     privileged: true
+
+  - procedure: shell.run
+    info: "Update system"
+    command: pacman
+    args: ["-Suy"]
+    privileged: true
