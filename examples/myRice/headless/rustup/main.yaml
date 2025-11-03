@@ -3,5 +3,5 @@ actions:
     package: [rustup]
 
   - procedure: shell.run
-    command: [rustup]
+    command: rustup
     args: [default, stable]

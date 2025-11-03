@@ -4,6 +4,8 @@ from dotify_lib.namespace import Namespace
 from dataclasses import dataclass
 from pathlib import Path
 
+import shutil
+
 
 @dataclass
 class DotifyPlugin_git(DotifyPlugin):
@@ -19,7 +21,12 @@ class DotifyPlugin_git(DotifyPlugin):
         if "url" not in kwargs:
             print(f"[ERROR]: Provide url for git.clone!")
             exit(-1)
-        url = kwargs["url"]
+        url: str = kwargs["url"]
+
+        folder_name = url.removesuffix(".git").split("/")[-1]
+        repo_path = cwd / folder_name
+        if repo_path.exists():
+            shutil.rmtree(repo_path)
 
         shell = Shell(cwd)
         status = shell.run(f"git clone {url}")

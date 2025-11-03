@@ -16,8 +16,11 @@ class DotifyPlugin_pacman(DotifyPlugin):
         *args,
         **kwargs,
     ):
+        if "package" not in kwargs:
+            print(f"[ERROR]: pacman required `package` argument!")
+            exit(-1)
         shell = Shell(cwd)
-        command = f"pacman -S {' '.join(kwargs['package'])}"
+        command = f"pacman -S {' '.join(kwargs['package'])} --noconfirm --needed"
         status = shell.run(command, privileged=True)
         if status != 0:
             print(f"Failed to install package: {kwargs['package']}")

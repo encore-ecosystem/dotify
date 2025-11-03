@@ -1,7 +1,8 @@
 depends:
-  # - pacman
-  # - git
-  # - paru
+  - pacman
+  - git
+  - rustup
+  - paru
   - fastfetch
-  # - nvim
-  # - zsh
+  - nvim
+  - zsh

@@ -1,6 +1,3 @@
-depends:
-  - ../rustup
-
 actions:
   - procedure: git.clone
     name: Clonning paru repository

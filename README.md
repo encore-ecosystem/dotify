@@ -56,3 +56,18 @@ project  - folder with dotify.toml
 
 
 1 plugin for 1 yaml
+
+
+
+## Installation
+
+### step 0:
+Make sure that you have installed `uv`:
+```
+sudo pacman -S uv
+```
+
+### step 1:
+Install `dotify`
+```
+```
