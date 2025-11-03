@@ -3,3 +3,4 @@ depends:
   - network.yaml
   - brightnessctl.yaml
   - sound.yaml
+  - vpn.yaml
