@@ -1,6 +1,7 @@
 from dotify_lib.plugin import PluginManager
 from dotify_lib.manifest import DotifyProjectManifest
 from dotify_lib.dotify import Dotify
+from dotify_lib.namespace import DotifyNamespace
 from pathlib import Path
 
 
@@ -31,4 +32,4 @@ def apply(*args):
         else:
             manifests_folder = (cwd / manifests_folder_overide).resolve()
 
-    Dotify(plugin_manager).apply(manifests_folder)
+    Dotify(plugin_manager, DotifyNamespace()).apply(manifests_folder)

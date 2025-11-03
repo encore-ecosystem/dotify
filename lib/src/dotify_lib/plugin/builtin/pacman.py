@@ -1,5 +1,6 @@
 from dotify_lib.plugin.plugin import DotifyPlugin
 from dotify_lib.shell import Shell
+from dotify_lib.namespace import Namespace
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -11,6 +12,7 @@ class DotifyPlugin_pacman(DotifyPlugin):
     def hook_install(
         self,
         cwd: Path,
+        namespace: Namespace,
         *args,
         **kwargs,
     ):

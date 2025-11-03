@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 from dotify_lib.plugin import PluginManager
-from dotify_lib.shell import Shell
+from dotify_lib.namespace import Namespace
 
 from pathlib import Path
 from collections import deque
@@ -18,6 +18,7 @@ class Config:
 @dataclass
 class Dotify:
     plugins: PluginManager
+    namespace: Namespace
     tree: dict[Path, Config] = field(default_factory=dict)
     order: deque = field(default_factory=deque)
 
@@ -128,15 +129,12 @@ class Dotify:
 
     def _apply(self, path: Path):
         actions = self.tree[path].actions
-
-        shell = Shell(cwd=path.parent)
-
         for action in actions:
             if "procedure" not in action:
                 print(f"[ERROR]: Unable to find procedure in config: {path}")
                 exit(-1)
 
-            self.plugins.run_action(action, cwd=path.parent)
+            self.plugins.run_action(action, namespace=self.namespace, cwd=path.parent)
 
     @staticmethod
     def is_manifest(path: Path) -> bool:

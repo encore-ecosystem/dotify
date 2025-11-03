@@ -1,0 +1,14 @@
+actions:
+  - procedure: pacman.install
+    info: Installing fastfetch
+    package: ["fastfetch"]
+
+  - procedure: os.symlink
+    info: Adding symlink for fastfetch styles
+    src: "./files/style"
+    dst: "{{ user.home }}/.local/share/fastfetch"
+
+  - procedure: os.symlink
+    info: Adding symlink for fastfetch configs
+    src: "./files/configs"
+    dst: "{{ user.home }}/.config/fastfetch"

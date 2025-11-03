@@ -1,3 +1,0 @@
-action:
-  name: "Syncronize config file"
-  command: config.symlink
