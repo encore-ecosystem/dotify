@@ -1,0 +1,7 @@
+actions:
+  - procedure: pacman.install
+    package: [rustup]
+
+  - procedure: shell.run
+    command: rustup
+    args: [default, stable]

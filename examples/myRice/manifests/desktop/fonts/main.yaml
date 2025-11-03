@@ -1,0 +1,9 @@
+actions:
+  - procedure: paru.install
+    info: "Installing font `otf-font-awesome`"
+    package: ["otf-font-awesome"]
+
+  - procedure: paru.install
+    info: "Installing font `nerd-fonts`"
+    package: ["nerd-fonts"]
+    retries: 5

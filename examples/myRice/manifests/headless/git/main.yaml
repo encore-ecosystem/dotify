@@ -1,0 +1,3 @@
+actions:
+  - procedure: pacman.install
+    package: ["git"]

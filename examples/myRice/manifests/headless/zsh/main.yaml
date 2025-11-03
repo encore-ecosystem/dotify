@@ -1,0 +1,9 @@
+actions:
+  - procedure: paru.install
+    info: Installing zsh
+    package: ["zsh"]
+
+  - procedure: os.symlink
+    info: Adding symlink to zsh config
+    src: "./files/.zshrc"
+    dst: "{{ user.home }}/.zshrc"

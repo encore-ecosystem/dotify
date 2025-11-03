@@ -1,0 +1,18 @@
+actions:
+  - procedure: paru.install
+    info: "Installing plasma-nm"
+    package:
+      - plasma-nm
+    retries: 5
+
+  - procedure: shell.run
+    info: "Enable autostart for NetworkManager"
+    command: systemctl
+    args: ["enable", "NetworkManager"]
+    privileged: true
+
+  - procedure: shell.run
+    info: "Starting NetworkManager"
+    command: systemctl
+    args: ["start", "NetworkManager"]
+    privileged: true

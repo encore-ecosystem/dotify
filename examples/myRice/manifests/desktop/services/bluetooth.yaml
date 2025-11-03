@@ -1,0 +1,20 @@
+actions:
+  - procedure: paru.install
+    info: "Installing bluez"
+    package:
+      - bluez
+      - bluez-utils
+      - bluedevil
+    retries: 5
+
+  - procedure: shell.run
+    info: "Enable autostart for bluetooth"
+    command: systemctl
+    args: ["enable", "bluetooth.service"]
+    privileged: true
+
+  - procedure: shell.run
+    info: "Starting bluetooth"
+    command: systemctl
+    args: ["start", "bluetooth.service"]
+    privileged: true

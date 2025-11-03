@@ -1,0 +1,5 @@
+[config]
+name = "MyRice"
+description = "I use this environment in my system"
+version = "0.0.1"
+author = "Maksim Shushkevich"

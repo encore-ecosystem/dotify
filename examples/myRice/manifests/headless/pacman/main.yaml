@@ -1,0 +1,18 @@
+actions:
+  - procedure: os.move
+    info: "Backupping old pacman.conf"
+    src: "/etc/pacman.conf"
+    dst: "/etc/pacman.conf.bak"
+    privileged: true
+
+  - procedure: os.symlink
+    info: "Adding symlink for pacman.conf"
+    src: "./files/pacman.conf"
+    dst: "/etc/pacman.conf"
+    privileged: true
+
+  - procedure: shell.run
+    info: "Update system"
+    command: pacman
+    args: ["-Suy"]
+    privileged: true

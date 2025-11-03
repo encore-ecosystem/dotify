@@ -1,0 +1,9 @@
+actions:
+  - procedure: git.clone
+    info: Clonning paru repository
+    url: https://aur.archlinux.org/paru-bin.git
+
+  - procedure: shell.run
+    info: Install paru
+    command: makepkg
+    args: ["-si", "-D", "paru-bin"]
