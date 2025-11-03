@@ -1,6 +1,0 @@
-actions:
-  - procedure: paru.install
-    info: "Adding astral-sh toolkit"
-    package:
-      - ruff
-      - ty-bin

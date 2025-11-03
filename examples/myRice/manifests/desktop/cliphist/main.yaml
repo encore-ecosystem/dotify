@@ -1,5 +1,0 @@
-actions:
-  - procedure: paru.install
-    info: Installing cliphist
-    package:
-      - cliphist

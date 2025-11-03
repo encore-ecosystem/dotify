@@ -1,5 +1,0 @@
-actions:
-  - procedure: paru.install
-    info: Installing nwg-displays
-    package:
-      - nwg-displays
