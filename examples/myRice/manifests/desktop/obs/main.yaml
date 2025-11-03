@@ -1,0 +1,5 @@
+actions:
+  - procedure: paru.install
+    info: Installing obs-studio
+    package:
+      - obs-studio

@@ -1,0 +1,5 @@
+depends:
+  - bluetooth.yaml
+  - network.yaml
+  - brightnessctl.yaml
+  - sound.yaml

@@ -1,0 +1,12 @@
+depends:
+  - ../fonts
+
+actions:
+  - procedure: paru.install
+    info: "Installing waybar"
+    package: ["waybar"]
+
+  - procedure: os.symlink
+    info: "Adding symlink for waybar configs"
+    src: "./files/waybar"
+    dst: "{{ user.config }}"

@@ -1,0 +1,13 @@
+depends:
+  # - services
+  - zed
+  - waybar
+  - dolphin
+  - cliphist
+  - firefox
+  - fuzzel
+  - nwg-displays
+  - obs
+  - steam
+  - waypaper
+  - hyprland

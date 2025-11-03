@@ -1,8 +1,0 @@
-depends:
-  - pacman
-  - git
-  - rustup
-  - paru
-  - fastfetch
-  - nvim
-  - zsh

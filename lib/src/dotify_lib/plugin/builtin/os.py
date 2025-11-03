@@ -62,7 +62,7 @@ class DotifyPlugin_os(DotifyPlugin):
         src = get_absolute_path(cwd, Path(resolve(kwargs["src"], namespace)))
         dst = get_absolute_path(cwd, Path(resolve(kwargs["dst"], namespace)))
 
-        if not src.exists():
+        if not src.exists(follow_symlinks=False):
             print(f"[ERROR]: Source path {src} doesn't exists")
             exit(-1)
         dst.parent.mkdir(parents=True, exist_ok=True)

@@ -1,8 +1,11 @@
-from dotify_lib.plugin.plugin import DotifyPlugin
-from dotify_lib.shell import Shell
-from dotify_lib.namespace import Namespace
 from dataclasses import dataclass
 from pathlib import Path
+
+from dotify_lib.namespace import Namespace
+from dotify_lib.plugin.plugin import DotifyPlugin
+from dotify_lib.shell import Shell
+
+DEFAULT_NUM_RETRIES = 3
 
 
 @dataclass
@@ -17,11 +20,16 @@ class DotifyPlugin_pacman(DotifyPlugin):
         **kwargs,
     ):
         if "package" not in kwargs:
-            print(f"[ERROR]: pacman required `package` argument!")
+            print("[ERROR]: pacman required `package` argument!")
             exit(-1)
         shell = Shell(cwd)
-        command = f"pacman -S {' '.join(kwargs['package'])} --noconfirm --needed"
-        status = shell.run(command, privileged=True)
-        if status != 0:
-            print(f"Failed to install package: {kwargs['package']}")
+        for retry in range(kwargs.get("retries", DEFAULT_NUM_RETRIES)):
+            print(f"[INFO]: Retry {retry}")
+            command = f"pacman -S {' '.join(kwargs['package'])} --noconfirm --needed"
+            status = shell.run(command, privileged=True)
+            if status != 0:
+                print(f"Failed to install package: {kwargs['package']}")
+            else:
+                break
+        else:
             exit(-1)
