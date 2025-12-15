@@ -20,7 +20,9 @@ class DotifyPlugin_paru(DotifyPlugin):
 
         for retry in range(kwargs.get("retries", DEFAULT_NUM_RETRIES)):
             print(f"[INFO]: Retry {retry}")
-            command = f"paru -S {' '.join(kwargs['package'])} --noconfirm --needed"
+            noconfirm = "" if kwargs.get("manual", False) else "--noconfirm"
+            needed = "" if kwargs.get("needed", True) else "--needed"
+            command = f"paru -S {' '.join(kwargs['package'])} {noconfirm} {needed}"
             status = shell.run(command, privileged=False)
             if status != 0:
                 print(f"[ERROR]: Failed to install package: {kwargs['package']}")

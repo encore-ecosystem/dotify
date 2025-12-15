@@ -1,12 +1,12 @@
-from dataclasses import dataclass, field
-
-from dotify_lib.plugin import PluginManager
-from dotify_lib.namespace import Namespace
-
-from pathlib import Path
 from collections import deque
+from dataclasses import dataclass, field
+from pathlib import Path
 
 import yaml
+from git import Repo
+
+from dotify_lib.namespace import Namespace
+from dotify_lib.plugin import PluginManager
 
 
 @dataclass
@@ -31,6 +31,7 @@ class Dotify:
 
         # step 2: Validate tree
         print("[INFO]: Validating tree...")
+
         if not self._check_is_dag(path):
             print("[ERROR]: Found cycle!")
             exit(-1)
@@ -64,6 +65,9 @@ class Dotify:
                 exit(-1)
 
             for dep in deps:
+                if dep.startswith("git+"):
+                    repo = dep.replace("git+", "")
+                    dep = self._clone_repository(repo)
                 dep = Path(dep)
                 if not dep.is_absolute():
                     dep = path.parent / dep
@@ -75,13 +79,15 @@ class Dotify:
                 self._build_subtree(dep)
 
         elif self.is_manifest(path):
-            print("!!!")
+            target_path = self._predict_path(path)
+            if not target_path.exists():
+                print(f"[ERROR]: Manifest directory not found: {path.parent}")
+                exit(-1)
+            self._build_subtree(target_path)
 
         else:
             print(f"[ERROR]: Unexpected file: {path}")
             exit(-1)
-
-        # Read config
 
     def _check_is_dag(self, root: Path) -> bool:
         observed: set[Path] = set()
@@ -118,7 +124,7 @@ class Dotify:
 
         manifests_path = path / "dotify.toml"
         if manifests_path.exists():
-            return manifests_path
+            return manifests_path.parent / "manifests" / "main.yaml"
 
         main_yaml_path = path / "main.yaml"
         if main_yaml_path.exists():
@@ -135,6 +141,16 @@ class Dotify:
                 exit(-1)
 
             self.plugins.run_action(action, namespace=self.namespace, cwd=path.parent)
+
+    def _clone_repository(self, url: str) -> Path:
+        print(f"[INFO]: Cloning repository: {url}")
+        user_name, user_repo = url.removesuffix(".git").split("/")[-2:]
+        to_path = Path.home() / ".cache" / "dotify" / user_name / user_repo
+        if not to_path.exists():
+            repo = Repo.clone_from(url, to_path)
+        repo = Repo(to_path)
+        repo.remotes.origin.pull()
+        return to_path
 
     @staticmethod
     def is_manifest(path: Path) -> bool:
