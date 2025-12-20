@@ -5,8 +5,10 @@ from pathlib import Path
 import yaml
 from git import Repo
 
+from dotify_lib import CACHE_DIR
 from dotify_lib.namespace import Namespace
 from dotify_lib.plugin import PluginManager
+from dotify_lib.shell import Shell
 
 
 @dataclass
@@ -140,12 +142,18 @@ class Dotify:
                 print(f"[ERROR]: Unable to find procedure in config: {path}")
                 exit(-1)
 
+            shell = Shell(cwd=path.parent)
+            if command := action.get("skip_if", None):
+                if shell.run(command, privileged=action.get("privileged", False)) == 0:
+                    print("[INFO]: Skipping this hook")
+                    continue
+
             self.plugins.run_action(action, namespace=self.namespace, cwd=path.parent)
 
     def _clone_repository(self, url: str) -> Path:
         print(f"[INFO]: Cloning repository: {url}")
         user_name, user_repo = url.removesuffix(".git").split("/")[-2:]
-        to_path = Path.home() / ".cache" / "dotify" / user_name / user_repo
+        to_path = CACHE_DIR / user_name / user_repo
         if not to_path.exists():
             repo = Repo.clone_from(url, to_path)
         repo = Repo(to_path)

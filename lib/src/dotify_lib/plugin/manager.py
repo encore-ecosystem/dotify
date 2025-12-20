@@ -1,31 +1,13 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from dotify_lib.namespace import Namespace
-from dotify_lib.plugin.builtin import (
-    DotifyPlugin_git,
-    DotifyPlugin_os,
-    DotifyPlugin_pacman,
-    DotifyPlugin_paru,
-    DotifyPlugin_shell,
-)
 from dotify_lib.plugin.plugin import DotifyPlugin
 
 
 @dataclass
 class PluginManager:
-    plugins: dict[str, DotifyPlugin]
-
-    @classmethod
-    def default(cls) -> "PluginManager":
-        plugins = [
-            DotifyPlugin_shell(),
-            DotifyPlugin_pacman(),
-            DotifyPlugin_git(),
-            DotifyPlugin_paru(),
-            DotifyPlugin_os(),
-        ]
-        return cls({plug.name: plug for plug in plugins})
+    plugins: dict[str, DotifyPlugin] = field(default_factory=dict)
 
     def append(self, plugin: DotifyPlugin):
         if plugin.name in self.plugins:

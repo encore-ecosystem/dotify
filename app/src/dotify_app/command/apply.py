@@ -1,8 +1,14 @@
-from dotify_lib.plugin import PluginManager
-from dotify_lib.manifest import DotifyProjectManifest
-from dotify_lib.dotify import Dotify
-from dotify_lib.namespace import DotifyNamespace
 from pathlib import Path
+
+from dotify_lib.dotify import Dotify
+from dotify_lib.manifest import DotifyProjectManifest
+from dotify_lib.namespace import DotifyNamespace
+from dotify_lib.plugin import PluginManager
+
+from dotify_app.plugins.git import Plugin_git
+from dotify_app.plugins.os import Plugin_os
+from dotify_app.plugins.package import Plugin_package
+from dotify_app.plugins.shell import Plugin_shell
 
 
 def apply(*args):
@@ -21,7 +27,11 @@ def apply(*args):
         exit(-1)
 
     # step 1: initialize plugin manager
-    plugin_manager = PluginManager.default()
+    plugin_manager = PluginManager()
+    plugin_manager.append(Plugin_shell())
+    plugin_manager.append(Plugin_os())
+    plugin_manager.append(Plugin_package())
+    plugin_manager.append(Plugin_git())
 
     # step 2: apply config
     manifests_folder = cwd / "manifests"

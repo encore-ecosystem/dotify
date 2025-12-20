@@ -1,5 +1,6 @@
-from dotify_lib.namespace.namespace import Namespace
 from pathlib import Path
+
+from dotify_lib.namespace.namespace import Namespace
 
 
 class NamespaceUser(Namespace):
@@ -12,7 +13,7 @@ class NamespaceUser(Namespace):
         return self.home / ".config"
 
     @property
-    def name(self) -> Path:
+    def name(self) -> str:
         return self.home.name
 
     def get_fields(self) -> dict[str, object]:
