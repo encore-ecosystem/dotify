@@ -13,7 +13,7 @@ class AurInstall(PluginProcedure):
     num_retries: int = Field(default=3, ge=1)
 
     def run(self, shell: Shell, namespace: Namespace):
-        command = f"{self.provider} -S {' '.join(self.packages)} --noconfirm --needed"
+        command = f"{self.provider} -S {' '.join(self.packages)} --needed"
         for retry in range(self.num_retries):
             log_info(f"Retry {retry + 1}/{self.num_retries}")
             if shell.run(command) == 0:
@@ -27,7 +27,7 @@ class AurRemove(PluginProcedure):
     num_retries: int = Field(default=3, ge=1)
 
     def run(self, shell: Shell, namespace: Namespace):
-        command = f"{self.provider} -R {' '.join(self.packages)} --noconfirm"
+        command = f"{self.provider} -R {' '.join(self.packages)}"
         for retry in range(self.num_retries):
             log_info(f"Retry {retry + 1}/{self.num_retries}")
             if shell.run(command) == 0:
@@ -41,7 +41,7 @@ class AurUpdate(PluginProcedure):
     num_retries: int = Field(default=3, ge=1)
 
     def run(self, shell: Shell, namespace: Namespace):
-        command = f"{self.provider} -Syu --noconfirm"
+        command = f"{self.provider} -Syu"
         for retry in range(self.num_retries):
             log_info(f"Retry {retry + 1}/{self.num_retries}")
             if shell.run(command) == 0:

@@ -25,14 +25,12 @@ source = { editable = "." }
 dependencies = [
     { name = "dotify-app" },
     { name = "dotify-lib" },
-    { name = "pydantic" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "dotify-app", editable = "app" },
     { name = "dotify-lib", editable = "lib" },
-    { name = "pydantic", specifier = ">=2.12.5" },
 ]
 
 [[package]]
@@ -52,12 +50,14 @@ version = "0.1.0"
 source = { editable = "lib" }
 dependencies = [
     { name = "gitpython" },
+    { name = "pydantic" },
     { name = "pyyaml" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "gitpython", specifier = ">=3.1.45" },
+    { name = "pydantic", specifier = ">=2.12.5" },
     { name = "pyyaml", specifier = ">=6.0.3" },
 ]
 

@@ -203,8 +203,28 @@ class Dotify:
             action.run(shell=shell, namespace=self.namespace)
 
     def _clone_repository(self, url: str) -> Path:
+        if url.count("@") > 1:
+            log_exception(f"Too many repository selectors: {url}")
+
+        kwargs = {}
+        selector = ""
+        if url.count("@") == 1:
+            selector = url.split("@")[1]
+            if selector.count("=") != 1:
+                log_exception(f"Invalid repository selector: {selector} in {url}")
+            selector_name, selector_value = selector.split("=")
+            match selector_name:
+                case "branch":
+                    kwargs = {"--branch": selector_value}
+                case "tag":
+                    kwargs = {"--tag": selector_value}
+                case "commit":
+                    kwargs = {"--commit": selector_value}
+                case _:
+                    log_exception(f"Unknown repository selector: {selector_name} in {url}")
+
         print(f"[INFO]: Cloning repository: {url}")
-        user_name, user_repo = url.removesuffix(".git").split("/")[-2:]
+        user_name, user_repo = url.removesuffix("@" + selector).removesuffix(".git").split("/")[-2:]
         to_path = CACHE_DIR / user_name / user_repo
         if not to_path.exists():
             repo = Repo.clone_from(url, to_path)

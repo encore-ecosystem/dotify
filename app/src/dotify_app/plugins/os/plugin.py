@@ -1,6 +1,12 @@
 from dotify_lib.plugin.plugin import DotifyPlugin
 
-from dotify_app.plugins.os.procedures import OsCopy, OsMkdir, OsMove, OsSymlink
+from dotify_app.plugins.os.procedures import (
+    OsCopy,
+    OsMkdir,
+    OsMove,
+    OsRemove,
+    OsSymlink,
+)
 
 
 class Plugin_os(DotifyPlugin):
@@ -12,5 +18,6 @@ class Plugin_os(DotifyPlugin):
                 "symlink": OsSymlink,
                 "copy": OsCopy,
                 "mkdir": OsMkdir,
+                "remove": OsRemove,
             },
         )
