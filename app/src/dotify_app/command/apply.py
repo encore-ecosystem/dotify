@@ -5,9 +5,11 @@ from dotify_lib.manifest import DotifyProjectManifest
 from dotify_lib.namespace import DotifyNamespace
 from dotify_lib.plugin import PluginManager
 
+from dotify_app.plugins.aur import Plugin_aur
+from dotify_app.plugins.cargo import Plugin_cargo
 from dotify_app.plugins.git import Plugin_git
 from dotify_app.plugins.os import Plugin_os
-from dotify_app.plugins.package import Plugin_package
+from dotify_app.plugins.pacman import Plugin_pacman
 from dotify_app.plugins.shell import Plugin_shell
 
 
@@ -30,8 +32,10 @@ def apply(*args):
     plugin_manager = PluginManager()
     plugin_manager.append(Plugin_shell())
     plugin_manager.append(Plugin_os())
-    plugin_manager.append(Plugin_package())
+    plugin_manager.append(Plugin_aur())
     plugin_manager.append(Plugin_git())
+    plugin_manager.append(Plugin_cargo())
+    plugin_manager.append(Plugin_pacman())
 
     # step 2: apply config
     manifests_folder = cwd / "manifests"

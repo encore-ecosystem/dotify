@@ -6,15 +6,17 @@ import yaml
 from git import Repo
 
 from dotify_lib import CACHE_DIR
+from dotify_lib.logger import log_critical, log_exception, log_info
 from dotify_lib.namespace import Namespace
 from dotify_lib.plugin import PluginManager
+from dotify_lib.plugin.procedure import PluginProcedure
 from dotify_lib.shell import Shell
 
 
 @dataclass
 class Config:
     depends: list[Path]
-    actions: list[dict]
+    actions: list[PluginProcedure]
 
 
 @dataclass
@@ -59,7 +61,31 @@ class Dotify:
             with path.open("r") as source:
                 config = yaml.safe_load(source) or {}
 
-            tree_node = Config(depends=[], actions=config.get("actions", {}))
+            actions: list[PluginProcedure] = []
+            for action in config.get("actions", {}):
+                if "procedure" not in action:
+                    log_exception(f"Missing 'procedure' key in action: {path}")
+                if (procedure := action["procedure"]).count(".") != 1:
+                    log_exception(
+                        f"Procedure <{procedure}> should be in format 'plugin_name.procedure': {path}"
+                    )
+                plugin_name, plugin_procedure_name = procedure.split(".")
+
+                if plugin_name not in self.plugins.plugins:
+                    log_exception(f"Plugin <{plugin_name}> not found: {path}")
+                plugin = self.plugins.plugins[plugin_name]
+
+                if plugin_procedure_name not in plugin.procedures:
+                    log_exception(
+                        f"Procedure <{plugin_procedure_name}> not found in plugin <{plugin_name}>: {path}"
+                    )
+                plugin_procedure_t = plugin.procedures[plugin_procedure_name]
+                procedure_config = action.copy()
+                del procedure_config["procedure"]
+
+                actions.append(plugin_procedure_t(**procedure_config))
+
+            tree_node = Config(depends=[], actions=actions)
 
             deps = config.get("depends", [])
             if not isinstance(deps, list):
@@ -92,17 +118,45 @@ class Dotify:
             exit(-1)
 
     def _check_is_dag(self, root: Path) -> bool:
-        observed: set[Path] = set()
+        def dfs(
+            node: Path,
+            visited: set[Path],
+            rec_stack: set[Path],
+            parent_map: dict[Path, Path],
+        ) -> bool:
+            visited.add(node)
+            rec_stack.add(node)
 
-        to_observe: deque[Path] = deque([root])
-        while to_observe:
-            node = to_observe.popleft()
-            if node in observed:
+            for neighbor in self.tree[node].depends:
+                parent_map[neighbor] = node
+                if neighbor not in visited:
+                    if not dfs(neighbor, visited, rec_stack, parent_map):
+                        return False
+                elif neighbor in rec_stack:
+                    cycle_path = []
+                    current = node
+                    cycle_path.append(neighbor)
+                    while current != neighbor and current in parent_map:
+                        cycle_path.append(current)
+                        current = parent_map[current]
+                    cycle_path.append(neighbor)
+                    cycle_str = " -> ".join(str(p) for p in reversed(cycle_path))
+                    log_critical(f"Cycle detected: {cycle_str}")
+                    return False
+
+            rec_stack.remove(node)
+            return True
+
+        visited = set()
+        start_node = root
+        if start_node in self.tree:
+            if not dfs(start_node, visited, set(), {}):
                 return False
 
-            observed.add(node)
-            for child in self.tree[node].depends:
-                to_observe.append(child)
+        for node in self.tree:
+            if node not in visited:
+                if not dfs(node, visited, set(), {}):
+                    return False
 
         return True
 
@@ -136,19 +190,17 @@ class Dotify:
         exit(-1)
 
     def _apply(self, path: Path):
-        actions = self.tree[path].actions
-        for action in actions:
-            if "procedure" not in action:
-                print(f"[ERROR]: Unable to find procedure in config: {path}")
-                exit(-1)
-
-            shell = Shell(cwd=path.parent)
-            if command := action.get("skip_if", None):
-                if shell.run(command, privileged=action.get("privileged", False)) == 0:
-                    print("[INFO]: Skipping this hook")
+        shell = Shell(cwd=path.parent)
+        for action in self.tree[path].actions:
+            if info := action.info:
+                log_info(info)
+            if condition := action.skip_condition:
+                log_info("Found skip condition! Output is:")
+                if shell.run(condition) == 0:
+                    log_info("Output is 0. Skipping this action")
                     continue
 
-            self.plugins.run_action(action, namespace=self.namespace, cwd=path.parent)
+            action.run(shell=shell, namespace=self.namespace)
 
     def _clone_repository(self, url: str) -> Path:
         print(f"[INFO]: Cloning repository: {url}")

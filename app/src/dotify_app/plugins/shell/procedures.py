@@ -17,3 +17,12 @@ class ShellRun(PluginProcedure):
         )
         if status != 0:
             log_exception(f"Something went wrong during executing this command: {cmd}")
+
+
+class ShellPath(PluginProcedure):
+    path: str
+
+    def run(self, shell: Shell, namespace: Namespace):
+        cmd = f"PATH=$PATH:{self.path}"
+        if shell.run(cmd=cmd) != 0:
+            log_exception(f"Something went wrong during executing this command: {cmd}")
