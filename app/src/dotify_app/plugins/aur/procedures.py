@@ -10,10 +10,11 @@ from pydantic import Field
 class AurInstall(PluginProcedure):
     provider: Literal["yay", "paru"] = "yay"
     packages: list[str]
+    no_confirm: bool = True
     num_retries: int = Field(default=3, ge=1)
 
     def run(self, shell: Shell, namespace: Namespace):
-        command = f"{self.provider} -S {' '.join(self.packages)} --needed"
+        command = f"{self.provider} -S {' '.join(self.packages)} --needed {'--noconfirm' if self.no_confirm else ''}"
         for retry in range(self.num_retries):
             log_info(f"Retry {retry + 1}/{self.num_retries}")
             if shell.run(command) == 0:
