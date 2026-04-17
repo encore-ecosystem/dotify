@@ -1,0 +1,6 @@
+actions:
+  - procedure: yay.install
+    info: "Installing waypaper"
+    package:
+      - hyprpaper # backend
+      - waypaper

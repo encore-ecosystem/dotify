@@ -1,0 +1,6 @@
+[manifest]
+name = "Atlas-desktop"
+
+[pages.Mango]
+location = "path@Atlas-mango"
+git

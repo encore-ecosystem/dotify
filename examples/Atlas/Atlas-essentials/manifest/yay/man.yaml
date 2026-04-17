@@ -1,0 +1,12 @@
+actions:
+  - procedure: git.clone
+    info: Clonning yay repository
+    url: https://aur.archlinux.org/yay.git
+
+  - procedure: shell.run
+    info: Install yay
+    command: makepkg
+    args: ["-si", "-D", "yay"]
+
+depends:
+  - git

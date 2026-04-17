@@ -2,12 +2,29 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from dotify_lib.namespace import Namespace
+from dotify_lib.plugin import builtin
 from dotify_lib.plugin.plugin import DotifyPlugin
+
+BULTIN_PLUGINS = [
+    builtin.Plugin_aur,
+    builtin.Plugin_cargo,
+    builtin.Plugin_git,
+    builtin.Plugin_os,
+    builtin.Plugin_pacman,
+    builtin.Plugin_shell,
+]
 
 
 @dataclass
 class PluginManager:
     plugins: dict[str, DotifyPlugin] = field(default_factory=dict)
+
+    @classmethod
+    def with_builtin_plugins(cls) -> "PluginManager":
+        result = PluginManager()
+        for plugin in BULTIN_PLUGINS:
+            result.append(plugin())
+        return result
 
     def append(self, plugin: DotifyPlugin):
         if plugin.name in self.plugins:

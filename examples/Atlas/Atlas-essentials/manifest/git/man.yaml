@@ -1,0 +1,6 @@
+actions:
+  - procedure: pacman.install
+    packages: ["git"]
+
+depends:
+  - pacman

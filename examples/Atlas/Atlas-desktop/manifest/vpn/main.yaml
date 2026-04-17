@@ -1,0 +1,4 @@
+actions:
+  - procedure: yay.install
+    info: "Installing throne"
+    package: ["throne-bin"]

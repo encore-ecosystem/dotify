@@ -1,0 +1,14 @@
+actions:
+  - procedure: pacman.install
+    info: Installing zsh and completions
+    packages:
+      - "zsh"
+      - "zsh-completions"
+
+  - procedure: os.symlink
+    info: Adding symlink to zsh config
+    src: ".zshrc"
+    dst: "{{ user.home }}/.zshrc"
+
+depends:
+  - pacman

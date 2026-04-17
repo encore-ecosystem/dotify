@@ -1,42 +1,60 @@
-from dataclasses import dataclass
+import tomllib
 from pathlib import Path
 from typing import Optional
-import tomllib
+
+from pydantic import BaseModel, ConfigDict, Field
+
+from dotify_lib.plugin.procedure import PluginProcedure
 
 
-@dataclass
-class DotifyProjectConfig:
+class StrictModel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+
+class Manual(StrictModel):
+    name: str = Field(min_length=1)
+    actions: list[PluginProcedure] = Field(default=[])
+    dependencies: list[str] = Field(default=[])
+
+
+class PresetSection(StrictModel):
     name: str = "unknown"
     description: str = ""
     version: str = "0.0.1"
     author: str = ""
 
 
-@dataclass
-class DotifyProjectManifest:
-    config: DotifyProjectConfig
+class PageSection(StrictModel):
+    name: str = Field(min_length=1)
+    location: str = Field(min_length=1)
+
+
+class ProjectManifest(StrictModel):
+    preset: PresetSection
+    pages: list[PageSection]
 
     @classmethod
-    def default(cls) -> "DotifyProjectManifest":
-        return cls(config=DotifyProjectConfig())
+    def get_default_filename(cls) -> str:
+        return "dotify.toml"
 
     @classmethod
-    def read(cls, path: Path) -> Optional["DotifyProjectManifest"]:
+    def read(cls, path: Path) -> Optional["ProjectManifest"]:
         if not path.exists() or not path.is_file():
             return None
 
         with path.open("rb") as source:
-            manifest_overides = tomllib.load(source)
+            manifest_dict = tomllib.load(source)
 
-        manifest = cls.default()
-
-        if "config" in manifest_overides:
-            if "name" in manifest_overides["config"]:
-                manifest.config.name = manifest_overides["config"]["name"]
-            if "version" in manifest_overides["config"]:
-                manifest.config.version = manifest_overides["config"]["version"]
-
-            # skip: description, author
-            # because it is unused information for dotify
-
+        preset = PresetSection(**manifest_dict.get("preset", {}))
+        pages = []
+        page_section = manifest_dict.get("pages", {})
+        for page_name in page_section:
+            pages.append(PageSection(name=page_name, **page_section[page_name]))
+        manifest = cls(
+            preset=preset,
+            pages=pages,
+        )
         return manifest
+
+    def __hash__(self) -> int:
+        return hash(self.preset.name)

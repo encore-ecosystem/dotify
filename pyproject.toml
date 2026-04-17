@@ -1,31 +1,26 @@
-# Virtual project
-
-[tool.uv.workspace]
-members = [
-    "app",
-    "lib",
-]
-
-
 [project]
 name = "dotify"
 version = "0.1.0"
-description = "Add your description here"
+description = "System config manager"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "dotify-app",
     "dotify-lib",
+    "rich>=15.0.0",
 ]
 
 [tool.uv.sources]
-dotify-app = { workspace = true }
-dotify-lib = { workspace = true }
+dotify-lib = { path = "lib", editable = true }
 
+[project.scripts]
+dotify = "dotify.cli:main"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.9.5,<0.12.0"]
+build-backend = "uv_build"
 
-[tool.hatch.build]
-packages = ["app", "lib"]
+[dependency-groups]
+dev = [
+    "ruff>=0.15.11",
+    "ty>=0.0.31",
+]

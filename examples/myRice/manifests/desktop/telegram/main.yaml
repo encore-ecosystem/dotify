@@ -1,4 +1,4 @@
 actions:
-  - procedure: paru.install
+  - procedure: yay.install
     info: "Installing Telegram"
     package: ["telegram-desktop"]

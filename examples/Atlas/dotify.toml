@@ -1,0 +1,8 @@
+[preset]
+name = "Atlas"
+
+[pages.Essentials]
+location = "path@Atlas-essentials"
+
+[pages.Desktop]
+location = "path@Atlas-desktop"

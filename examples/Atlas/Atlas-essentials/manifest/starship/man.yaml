@@ -1,0 +1,14 @@
+actions:
+  - procedure: pacman.install
+    info: Installing starship
+    packages:
+      - "starship"
+
+  - procedure: os.symlink
+    info: Configuring starship config
+    src: "starship.toml"
+    dst: "{{ user.config }}/starship.toml"
+
+depends:
+  - pacman
+  - zsh
