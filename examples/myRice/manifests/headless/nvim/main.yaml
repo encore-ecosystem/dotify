@@ -1,4 +1,0 @@
-actions:
-  - procedure: yay.install
-    info: Installing nvim
-    package: ["nvim"]

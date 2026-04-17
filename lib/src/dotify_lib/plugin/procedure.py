@@ -11,6 +11,7 @@ class PluginProcedure(BaseModel, ABC):
 
     info: str | None = None
     skip_condition: str | None = None
+    retries: int = 1
 
     @abstractmethod
     def run(self, shell: Shell, namespace: Namespace):

@@ -1,7 +1,7 @@
 actions:
-  - procedure: yay.install
+  - procedure: aur.install
     info: "Installing plasma-nm"
-    package:
+    packages:
       - plasma-nm
     retries: 5
 

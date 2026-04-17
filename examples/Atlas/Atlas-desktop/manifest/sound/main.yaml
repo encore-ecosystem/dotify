@@ -1,4 +1,5 @@
 actions:
-  - procedure: yay.install
+  - procedure: aur.install
     info: "Installing pavucontrol"
-    package: ["pavucontrol"]
+    packages:
+      - "pavucontrol"

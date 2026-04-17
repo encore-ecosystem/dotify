@@ -1,9 +1,0 @@
-actions:
-  - procedure: yay.install
-    info: "Installing zed preview"
-    package: ["zed-preview-bin"]
-
-  - procedure: os.symlink
-    info: "Adding symlink for zed settings"
-    src: "./files/zed"
-    dst: "{{ user.config }}/zed"

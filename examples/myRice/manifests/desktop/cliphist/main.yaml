@@ -1,5 +1,0 @@
-actions:
-  - procedure: yay.install
-    info: Installing cliphist
-    package:
-      - cliphist

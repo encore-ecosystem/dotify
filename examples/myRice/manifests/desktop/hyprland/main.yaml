@@ -1,5 +1,0 @@
-actions:
-  - procedure: os.symlink
-    info: "Applying symlinks for hyprland config"
-    src: "./files/hypr"
-    dst: "{{ user.config }}"

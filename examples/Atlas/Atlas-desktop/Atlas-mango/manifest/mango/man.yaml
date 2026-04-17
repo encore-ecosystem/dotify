@@ -1,0 +1,10 @@
+actions:
+  - procedure: aur.install
+    info: "Installing mango"
+    packages:
+      - mangowm-wc
+
+  - procedure: os.symlink
+    info: "Adding symlink for mango config"
+    src: "mango"
+    dst: "{{ user.config }}"
