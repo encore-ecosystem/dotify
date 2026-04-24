@@ -1,0 +1,5 @@
+actions:
+  - procedure: pacman.install
+    info: Installing fastfetch
+    packages:
+      - fastfetch

@@ -1,0 +1,6 @@
+actions:
+  - procedure: aur.install
+    info: Installing nerd and gnu fonts
+    packages:
+      - nerd-fonts
+      - gnu-free-fonts

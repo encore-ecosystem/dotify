@@ -3,3 +3,12 @@ actions:
     info: Installing fuzzel
     packages:
       - fuzzel
+
+  - procedure: os.mkdir
+    info: "Creating config folder for fuzzel"
+    path: "{{ user.config }}/fuzzel"
+
+  - procedure: os.symlink
+    info: "Symlinking fuzzel config"
+    src: "files/fuzzel/fuzzel.ini"
+    dst: "{{ user.config }}/fuzzel/fuzzel.ini"

@@ -1,6 +1,0 @@
-actions:
-  - procedure: aur.install
-    info: "Installing waypaper"
-    package:
-      - hyprpaper # backend
-      - waypaper

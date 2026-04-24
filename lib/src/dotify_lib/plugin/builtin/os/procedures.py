@@ -73,7 +73,7 @@ class OsMkdir(PluginProcedure):
     def run(self, shell: Shell, namespace: Namespace):
         path = get_absolute_path(shell.cwd, Path(resolve(self.path, namespace)))
         log_info(f"Creating directory {path}")
-        status = shell.run(cmd=f"mkdir -p {self.path}", privileged=self.privileged)
+        status = shell.run(cmd=f"mkdir -p {path}", privileged=self.privileged)
         if status != 0:
             log_exception(f"Failed to create directory {path}")
 

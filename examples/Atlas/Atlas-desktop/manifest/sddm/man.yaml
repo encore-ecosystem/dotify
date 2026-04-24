@@ -1,0 +1,11 @@
+actions:
+  - procedure: aur.install
+    info: "Installing sddm"
+    packages:
+      - sddm-git
+
+  - procedure: shell.run
+    info: "Enabling sddm"
+    command: systemctl
+    args: ["enable", "sddm"]
+    privileged: true

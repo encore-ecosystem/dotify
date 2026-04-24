@@ -1,0 +1,6 @@
+actions:
+  - procedure: aur.install
+    info: Installing polkit
+    packages:
+      - polkit
+      - hyprpolkitagent

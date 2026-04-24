@@ -1,0 +1,33 @@
+actions:
+  - procedure: os.mkdir
+    info: Creating .config folder
+    path: "{{ user.home }}/.config"
+
+  - procedure: os.mkdir
+    info: Creating Documents folder
+    path: "{{ user.home }}/Documents"
+  
+  - procedure: os.mkdir
+    info: Creating Downloads folder
+    path: "{{ user.home }}/Downloads"
+
+  - procedure: os.mkdir
+    info: Creating Music folder
+    path: "{{ user.home }}/Music"
+
+  - procedure: os.mkdir
+    info: Creating Pictures folder
+    path: "{{ user.home }}/Pictures"
+
+  - procedure: os.mkdir
+    info: Creating Public folder
+    path: "{{ user.home }}/Public"
+
+  - procedure: os.mkdir
+    info: Creating Templates folder
+    path: "{{ user.home }}/Templates"
+
+  - procedure: os.mkdir
+    info: Creating Videos folder
+    path: "{{ user.home }}/Videos"
+

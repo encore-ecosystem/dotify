@@ -84,7 +84,7 @@ class Dotify:
                 )
 
         for man in self._get_order(manuals):
-            self._apply(path, manuals[man])
+            self._apply(path / "manifest" / man, manuals[man])
 
         for page in manifest.pages:
             print(f"[INFO]: Building page '{page.name}'")
@@ -153,7 +153,7 @@ class Dotify:
                     log_info("Output is 0. Skipping this action")
                     continue
 
-            # action.run(shell=shell, namespace=self.namespace)
+            action.run(shell=shell, namespace=self.namespace)
 
     def _clone_repository(self, url: str) -> Path:
         if url.count("@") > 1:

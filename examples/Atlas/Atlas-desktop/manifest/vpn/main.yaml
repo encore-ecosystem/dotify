@@ -1,5 +1,0 @@
-actions:
-  - procedure: aur.install
-    info: "Installing throne"
-    package:
-      - "throne-bin"

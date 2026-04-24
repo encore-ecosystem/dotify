@@ -7,6 +7,8 @@ actions:
     info: Install yay
     command: makepkg
     args: ["-si", "-D", "yay"]
+    skip_condition: "yay -V"
 
 depends:
   - git
+  - build

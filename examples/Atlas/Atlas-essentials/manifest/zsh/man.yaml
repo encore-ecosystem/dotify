@@ -4,10 +4,11 @@ actions:
     packages:
       - "zsh"
       - "zsh-completions"
+    skip_condition: zsh --version
 
   - procedure: os.symlink
     info: Adding symlink to zsh config
-    src: ".zshrc"
+    src: "files/.zshrc"
     dst: "{{ user.home }}/.zshrc"
 
 depends:

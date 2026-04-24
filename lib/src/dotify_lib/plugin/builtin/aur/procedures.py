@@ -10,7 +10,7 @@ from pydantic import Field
 class AurInstall(PluginProcedure):
     provider: Literal["yay", "paru"] = "yay"
     packages: list[str]
-    no_confirm: bool = True
+    no_confirm: bool = False
     num_retries: int = Field(default=3, ge=1)
 
     def run(self, shell: Shell, namespace: Namespace):

@@ -3,12 +3,14 @@ actions:
     info: Installing starship
     packages:
       - "starship"
+    skip_condition: starship -V
 
   - procedure: os.symlink
     info: Configuring starship config
-    src: "starship.toml"
+    src: "files/starship.toml"
     dst: "{{ user.config }}/starship.toml"
 
 depends:
   - pacman
   - zsh
+  - dirs

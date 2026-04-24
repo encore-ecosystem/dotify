@@ -1,7 +1,8 @@
 actions:
   - procedure: pacman.install
-    packages: ["git"]
-    skip_condition: "git -v"
+    packages:
+      - nano
+    skip_condition: "nano -V"
 
 depends:
   - pacman

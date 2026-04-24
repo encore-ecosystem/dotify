@@ -1,7 +1,8 @@
 actions:
   - procedure: pacman.install
-    packages: ["git"]
-    skip_condition: "git -v"
+    packages:
+      - less
+    skip_condition: "less -V"
 
 depends:
   - pacman
